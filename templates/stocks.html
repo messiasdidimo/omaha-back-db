@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pick Stocks</title>
+    <style>
+      body { font-family: sans-serif; } 
+      h1, h2 { text-align: center; }
+      .intro-text { margin-bottom: 20px; }
+      .special-offer { 
+          background-color: #f0f0f0; 
+          padding: 20px; 
+          border: 1px solid #ddd;
+          margin-bottom: 20px;
+      }
+      .testimonials { margin-bottom: 20px; } 
+      /* Menu Styling */
+      nav ul {
+          list-style-type: none;
+          padding: 0;
+          margin: 20px 0;
+          text-align: center;
+      }
+      nav li {
+          display: inline;
+          margin-right: 20px;
+      }
+    </style>
+    </head>
+    <body>
+    <nav>
+    <ul>
+      <li><a href="/">Home</a></li>  
+      <li><a href="warren_buffett">Invest like Warren Buffet</a></li>
+      <li><a href="stocks">Pick Stocks</a></li>
+      <li><a href="investors_type">Investor Type</a></li> 
+      <li><a href="value_investing">Value Investing</a></li>
+    </ul>
+    </nav>
+    <h1>Best stock picks for the defensive investor:</h1>
+    {{ common_symbols_html | safe }}
+
+</body>
+</html>

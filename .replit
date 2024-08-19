@@ -1,0 +1,25 @@
+entrypoint = "main.py"
+modules = ["python-3.10:v18-20230807-322e88b", "python-3.10:v25-20230920-d4ad2e4"]
+
+[nix]
+channel = "stable-23_05"
+
+[env]
+VIRTUAL_ENV = "$REPL_HOME/.pythonlibs"
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[deployment]
+run = "gunicorn -c gunicorn.conf.py -b 0.0.0.0:8080 main:app"
+deploymentTarget = "scheduled"
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[objectStorage]
+defaultBucketID = "replit-objstore-b7028ca8-7db1-472f-9648-847f806fe421"

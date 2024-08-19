@@ -1,0 +1,53 @@
+Effective Date: 04/21/2024
+
+1. Introduction
+
+Welcome to Oracle of Omaha (the "Service"). These Terms and Conditions ("Terms") govern your access and use of the Service offered by Oracle of Omaha ("we," "us," or "our"). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of these Terms, you may not access or use the Service.
+
+2. Service Description
+
+The Service provides curated stock recommendations based on an algorithm that analyzes companies in the S&P 500. You will receive daily emails with:
+
+A select list of promising stocks
+Individual scores for each stock based on our defined criteria
+An overall rating for each stock
+Relevant news stories related to the recommended stocks
+3. User Accounts
+
+You may be required to create an account to access certain features of the Service. You are responsible for maintaining the confidentiality of your account information, including your username and password. You agree to be fully responsible for all activities that occur under your account.
+
+4. User Content
+
+The Service may allow you to submit content, such as comments or feedback ("User Content"). You retain all ownership rights to your User Content, but you grant us a non-exclusive, worldwide, royalty-free license to use, reproduce, modify, publish, and distribute your User Content in connection with the Service.
+
+5. Disclaimers
+
+A. Investment Advice: The information provided by the Service is for informational purposes only and should not be considered as investment advice. You are solely responsible for making your own investment decisions.
+
+B. Accuracy of Information: We endeavor to provide accurate information, but we make no guarantees about the accuracy, completeness, or timeliness of the information provided through the Service.
+
+C. Warranties: The Service is provided "as is" and without warranties of any kind, express or implied. We disclaim all warranties, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement.
+
+6. Limitation of Liability
+
+We will not be liable for any damages arising out of your use of the Service, including but not limited to, direct, indirect, incidental, consequential, or punitive damages.
+
+7. Termination
+
+We may terminate your access to the Service at any time, with or without cause, and with or without notice. You may also terminate your account at any time.
+
+8. Governing Law
+
+These Terms shall be governed by and construed in accordance with the laws of Brazil, without regard to its conflict of law provisions.
+
+9. Entire Agreement
+
+These Terms constitute the entire agreement between you and us regarding the use of the Service.
+
+10. Amendments
+
+We may amend these Terms at any time by posting the amended Terms on the Service. Your continued use of the Service after the amended Terms are posted constitutes your agreement to the amended Terms.
+
+11. Contact Us
+
+If you have any questions about these Terms, please contact us at mda.learn@gmail.com.
