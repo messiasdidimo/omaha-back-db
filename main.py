@@ -543,11 +543,8 @@ def post_common_symbols_data(data):
   common_symbols_data = [{key: {'total_score': value["total_score"], "growth": value["growth"], "dividends": value["dividends"], "health": value["health"], "gnumber": value['gnumber'], 'marketcap': value['marketcap']}} for key, value in data.items()]
   # Convert to JSON formatted string
   content_to_post = json.dumps(common_symbols_data, indent=4)
-  
   url = os.environ.get('POST_COMMON_SYMBOLS')
-  
   headers = {'Content-Type': 'application/json'}
-  
   try:
       response = requests.post(url, json=content_to_post, headers=headers)
       if response.status_code == 200:
@@ -556,6 +553,35 @@ def post_common_symbols_data(data):
           print(f'Failed to send data. Status Code: {response.status_code}. Response: {response.text}')
   except Exception as e:
       print(f"An error occurred while sending data: {e}")
+
+
+def post_gnumber_data():
+  """Sends 'gnumber' data to the server as JSON."""
+  gnumber_data = db.get("gnumber")  
+  if gnumber_data:
+    # Convert ObservedDict to a standard dictionary
+    gnumber_data_dict = [{
+        ticker: {
+            'ticker': ticker,  # Include ticker
+            'GNumber': data['GNumber'],  # Include GNumber
+            'Current Price': data['Current Price'],  # Include Current Price
+            'score': data['score']  # Include score
+        }
+        for ticker, data in gnumber_data.items()
+    }]
+    content_to_post = json.dumps(gnumber_data_dict, indent=4)
+    url = os.environ.get('POST_GNUMBER_URL')  # Replace with your actual URL
+    headers = {'Content-Type': 'application/json'}
+    try:
+        response = requests.post(url, json=content_to_post, headers=headers)
+        if response.status_code == 200:
+            print('GNumber data successfully sent to the server.')
+        else:
+            print(f'Failed to send GNumber data. Status Code: {response.status_code}. Response: {response.text}')
+    except Exception as e:
+        print(f"An error occurred while sending GNumber data: {e}")
+  else:
+    print("The 'gnumber' section does not exist in the database.")
 
 
 def post_growth_data():
@@ -604,35 +630,6 @@ def post_health_data():
           print(f'Failed to send health data. Status Code: {response.status_code}. Response: {response.text}')
   except Exception as e:
       print(f"An error occurred while sending health data: {e}")
-
-
-def post_gnumber_data():
-  """Sends 'gnumber' data to the server as JSON."""
-  gnumber_data = db.get("gnumber")  
-  if gnumber_data:
-    # Convert ObservedDict to a standard dictionary
-    gnumber_data_dict = {
-        ticker: {
-            'ticker': ticker,  # Include ticker
-            'GNumber': data['GNumber'],  # Include GNumber
-            'Current Price': data['Current Price'],  # Include Current Price
-            'score': data['score']  # Include score
-        }
-        for ticker, data in gnumber_data.items()
-    }
-    content_to_post = json.dumps(gnumber_data_dict, indent=4)
-    url = os.environ.get('POST_GNUMBER_URL')  # Replace with your actual URL
-    headers = {'Content-Type': 'application/json'}
-    try:
-        response = requests.post(url, json=content_to_post, headers=headers)
-        if response.status_code == 200:
-            print('GNumber data successfully sent to the server.')
-        else:
-            print(f'Failed to send GNumber data. Status Code: {response.status_code}. Response: {response.text}')
-    except Exception as e:
-        print(f"An error occurred while sending GNumber data: {e}")
-  else:
-    print("The 'gnumber' section does not exist in the database.")
 
 
 def post_marketcap_data():
