@@ -559,16 +559,20 @@ def post_gnumber_data():
   """Sends 'gnumber' data to the server as JSON."""
   gnumber_data = db.get("gnumber")  
   if gnumber_data:
-    # Convert ObservedDict to a standard dictionary
-    gnumber_data_dict = [{
-        ticker: {
-            'ticker': ticker,  # Include ticker
-            'GNumber': data['GNumber'],  # Include GNumber
-            'Current Price': data['Current Price'],  # Include Current Price
-            'score': data['score']  # Include score
+    gnumber_data_dict = []
+    for ticker, data in gnumber_data.items():
+        # Round GNumber and Current Price to 2 decimal places using round()
+        rounded_gnumber = round(data['GNumber'], 2)
+        rounded_price = round(data['Current Price'], 2)
+
+        # Create the dictionary with rounded values
+        data_dict = {
+            'ticker': ticker,
+            'GNumber': rounded_gnumber,
+            'Current Price': rounded_price,
+            'score': data['score']
         }
-        for ticker, data in gnumber_data.items()
-    }]
+        gnumber_data_dict.append(data_dict)
     content_to_post = json.dumps(gnumber_data_dict, indent=4)
     url = os.environ.get('POST_GNUMBER_URL')  # Replace with your actual URL
     headers = {'Content-Type': 'application/json'}
