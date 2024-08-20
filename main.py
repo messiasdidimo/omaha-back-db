@@ -623,18 +623,37 @@ def post_dividends_data():
 
 def post_growth_data():
   """Sends 'growth' data to the server as JSON."""
-  growth_data = db["growth"]  # Assuming 'growth' is a dictionary in your Replit db
-  content_to_post = json.dumps(growth_data, indent=4)
-  url = os.environ.get('POST_GROWTH_URL')  # Replace with your actual URL
-  headers = {'Content-Type': 'application/json'}
-  try:
+  growth_data = db.get("growth")  # Assuming "dividends" holds growth data
+
+  # Check if growth data exists
+  if growth_data:
+    growth_data_dict = []
+    for ticker, data in growth_data.items():
+      # Round growth
+      rounded_growth = round(data['growth'], 2) 
+
+      # Extract relevant data from each dictionary (modify keys as needed)
+      data_dict = {
+          'ticker': ticker,
+          'score': data['score'], 
+          'growth': rounded_growth,  # Renamed key for growth
+          # Add any other relevant data points related to growth
+      }
+      growth_data_dict.append(data_dict)
+
+    content_to_post = json.dumps(growth_data_dict, indent=4)
+    url = os.environ.get('POST_GROWTH_URL')  # Replace with actual URL for growth data
+    headers = {'Content-Type': 'application/json'}
+    try:
       response = requests.post(url, json=content_to_post, headers=headers)
       if response.status_code == 200:
-          print('Growth data successfully sent to the server.')
+        print('Growth data successfully sent to the server.')
       else:
-          print(f'Failed to send growth data. Status Code: {response.status_code}. Response: {response.text}')
-  except Exception as e:
+        print(f'Failed to send growth data. Status Code: {response.status_code}. Response: {response.text}')
+    except Exception as e:
       print(f"An error occurred while sending growth data: {e}")
+  else:
+    print("The 'growth' section (growth data) does not exist in the database.")
 
 
 def post_health_data():
@@ -716,5 +735,6 @@ test = ['SNA', 'EG', 'AIZ', 'UHS', 'RL', 'GL', 'CMA', 'MTB', 'NVR', 'BG', 'AMD',
 
 # common_symbols()
 # send_email()
-post_dividends_data()
 post_gnumber_data()
+post_dividends_data()
+post_growth_data()
