@@ -656,6 +656,41 @@ def post_growth_data():
     print("The 'growth' section (growth data) does not exist in the database.")
 
 
+def post_marketcap_data():
+  """Sends 'marketcap' data to the server as JSON."""
+  marketcap_data = db.get("marketcap")   
+
+  # Check if marketcap data exists
+  if marketcap_data:
+    marketcap_data_dict = []
+    for ticker, data in marketcap_data.items():
+      rounded_marketcap = round(data['marketCap'], 2)
+      # No rounding needed for market cap (assuming it's already numerical)
+
+      # Extract relevant data from each dictionary (modify keys as needed)
+      data_dict = {
+          'ticker': ticker,
+          'score': data['score'],  # Replace with actual key name (if not score)
+          'marketcap': rounded_marketcap,  # Renamed key for market cap
+          # Add any other relevant data points related to market cap
+      }
+      marketcap_data_dict.append(data_dict)
+
+    content_to_post = json.dumps(marketcap_data_dict, indent=4)
+    url = os.environ.get('POST_MARKETCAP_URL')  # Replace with actual URL
+    headers = {'Content-Type': 'application/json'}
+    try:
+      response = requests.post(url, json=content_to_post, headers=headers)
+      if response.status_code == 200:
+        print('Market cap data successfully sent to the server.')
+      else:
+        print(f'Failed to send market cap data. Status Code: {response.status_code}. Response: {response.text}')
+    except Exception as e:
+      print(f"An error occurred while sending market cap data: {e}")
+  else:
+    print("The 'marketcap' section does not exist in the database.")
+
+
 def post_health_data():
   """Sends 'health' data to the server as JSON."""
   health_data = db["health"]
@@ -670,22 +705,6 @@ def post_health_data():
           print(f'Failed to send health data. Status Code: {response.status_code}. Response: {response.text}')
   except Exception as e:
       print(f"An error occurred while sending health data: {e}")
-
-
-def post_marketcap_data():
-  """Sends 'marketcap' data to the server as JSON."""
-  marketcap_data = db["marketcap"]
-  content_to_post = json.dumps(marketcap_data, indent=4)
-  url = os.environ.get('POST_MARKETCAP_URL')  # Replace with your actual URL
-  headers = {'Content-Type': 'application/json'}
-  try:
-      response = requests.post(url, json=content_to_post, headers=headers)
-      if response.status_code == 200:
-          print('MarketCap data successfully sent to the server.')
-      else:
-          print(f'Failed to send MarketCap data. Status Code: {response.status_code}. Response: {response.text}')
-  except Exception as e:
-      print(f"An error occurred while sending MarketCap data: {e}")
 
 
 # # ==================== MAIN SCRIPT ====================
@@ -735,6 +754,7 @@ test = ['SNA', 'EG', 'AIZ', 'UHS', 'RL', 'GL', 'CMA', 'MTB', 'NVR', 'BG', 'AMD',
 
 # common_symbols()
 # send_email()
-post_gnumber_data()
-post_dividends_data()
+post_marketcap_data()
 post_growth_data()
+post_dividends_data()
+post_gnumber_data()
