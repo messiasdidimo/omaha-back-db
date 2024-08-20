@@ -693,18 +693,40 @@ def post_marketcap_data():
 
 def post_health_data():
   """Sends 'health' data to the server as JSON."""
-  health_data = db["health"]
-  content_to_post = json.dumps(health_data, indent=4)
-  url = os.environ.get('POST_HEALTH_URL')  # Replace with your actual URL
-  headers = {'Content-Type': 'application/json'}
-  try:
+  health_data = db.get("health")  # Assuming "health" holds the data
+
+  # Check if health data exists
+  if health_data:
+    health_data_dict = []
+    for ticker, data in health_data.items():
+      rounded_current_liabilities = round(data['Current Liabilities'], 2)
+      rounded_current_assets = round(data['Current Assets'], 2)
+      # No rounding needed for health data (format depends on data type)
+
+      # Extract relevant data from each dictionary (modify keys as needed)
+      data_dict = {
+          'ticker': ticker,
+          'score': data['score'],
+          'health': data['Health'], 
+          'current_liabilities': rounded_current_liabilities,
+          'current_assets': rounded_current_assets,
+          # Add any other relevant data points related to health
+      }
+      health_data_dict.append(data_dict)
+
+    content_to_post = json.dumps(health_data_dict, indent=4)
+    url = os.environ.get('POST_HEALTH_URL')  # Replace with actual URL
+    headers = {'Content-Type': 'application/json'}
+    try:
       response = requests.post(url, json=content_to_post, headers=headers)
       if response.status_code == 200:
-          print('Health data successfully sent to the server.')
+        print('Health data successfully sent to the server.')
       else:
-          print(f'Failed to send health data. Status Code: {response.status_code}. Response: {response.text}')
-  except Exception as e:
+        print(f'Failed to send health data. Status Code: {response.status_code}. Response: {response.text}')
+    except Exception as e:
       print(f"An error occurred while sending health data: {e}")
+  else:
+    print("The 'health' section does not exist in the database.")
 
 
 # # ==================== MAIN SCRIPT ====================
@@ -754,7 +776,4 @@ test = ['SNA', 'EG', 'AIZ', 'UHS', 'RL', 'GL', 'CMA', 'MTB', 'NVR', 'BG', 'AMD',
 
 # common_symbols()
 # send_email()
-post_marketcap_data()
-post_growth_data()
-post_dividends_data()
-post_gnumber_data()
+post_health_data()
