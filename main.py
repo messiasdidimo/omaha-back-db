@@ -100,7 +100,7 @@ def calculate_dividends_and_store_in_db(symbol):
   """
   dividends_db_key = "dividends"
   
-  # Check if the growth section is up-to-date
+  # Check if the dividends section is up-to-date
   if is_db_section_up_to_date(dividends_db_key):
       print(f"{dividends_db_key} is up to date, skipping update.")
       return
@@ -587,6 +587,39 @@ def post_gnumber_data():
   else:
     print("The 'gnumber' section does not exist in the database.")
 
+def post_dividends_data():
+  """Sends 'dividends' data to the server as JSON."""
+  dividends_data = db.get("dividends")
+
+  # Check if dividends data exists
+  if dividends_data:
+    dividends_data_dict = []
+    for ticker, data in dividends_data.items():
+        # Round GNumber and Current Price to 2 decimal places using round()
+        rounded_average_yearly_dividend = round(data['average_yearly_dividend'], 2)
+        # Extract relevant data from each dictionary (modify keys as needed)
+        data_dict = {
+            'ticker': ticker,  # Replace with actual key for symbol
+            'score': data['score'],   # Replace with actual key for ex-date
+            'average_yearly_dividend': rounded_average_yearly_dividend,   # Replace with actual key for amount
+            # Add any other relevant data points
+        }
+        dividends_data_dict.append(data_dict)
+
+    content_to_post = json.dumps(dividends_data_dict, indent=4)
+    url = os.environ.get('POST_DIVIDENDS_URL')  # Replace with your actual URL
+    headers = {'Content-Type': 'application/json'}
+    try:
+      response = requests.post(url, json=content_to_post, headers=headers)
+      if response.status_code == 200:
+        print('Dividends data successfully sent to the server.')
+      else:
+        print(f'Failed to send dividends data. Status Code: {response.status_code}. Response: {response.text}')
+    except Exception as e:
+      print(f"An error occurred while sending dividends data: {e}")
+  else:
+    print("The 'dividends' section does not exist in the database.")
+
 
 def post_growth_data():
   """Sends 'growth' data to the server as JSON."""
@@ -602,22 +635,6 @@ def post_growth_data():
           print(f'Failed to send growth data. Status Code: {response.status_code}. Response: {response.text}')
   except Exception as e:
       print(f"An error occurred while sending growth data: {e}")
-
-
-def post_dividends_data():
-  """Sends 'dividends' data to the server as JSON."""
-  dividends_data = db["dividends"]
-  content_to_post = json.dumps(dividends_data, indent=4)
-  url = os.environ.get('POST_DIVIDENDS_URL')  # Replace with your actual URL
-  headers = {'Content-Type': 'application/json'}
-  try:
-      response = requests.post(url, json=content_to_post, headers=headers)
-      if response.status_code == 200:
-          print('Dividends data successfully sent to the server.')
-      else:
-          print(f'Failed to send dividends data. Status Code: {response.status_code}. Response: {response.text}')
-  except Exception as e:
-      print(f"An error occurred while sending dividends data: {e}")
 
 
 def post_health_data():
@@ -699,4 +716,5 @@ test = ['SNA', 'EG', 'AIZ', 'UHS', 'RL', 'GL', 'CMA', 'MTB', 'NVR', 'BG', 'AMD',
 
 # common_symbols()
 # send_email()
+post_dividends_data()
 post_gnumber_data()
